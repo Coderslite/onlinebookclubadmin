@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/plugins/bootstrap/dist/css/bootstrap.min.css">
+    <title>Login</title>
+</head>
+
+<body style=" background-image: url(assets/images/big/bg2.jpg);">
+    <div class="container">
+        <div class="justify-content-center d-flex mt-3">
+            <div class="form-group mt-5" style="height: 400px; width: 400px; background-color: rgb(233, 233, 233);">
+                <div class="container mt-5 mb-5">
+                    <h3 class="text-center mt-3">Login</h3>
+                    <form id="form">
+                        <input type="email" name="email" id="email" placeholder="Email Address"
+                            class="form-control mt-3" style="background-color: rgb(233, 233, 233);">
+                        <input type="password" name="password" id="password" placeholder="Password"
+                            class="form-control mt-1" style="background-color: rgb(233, 233, 233);">
+                        <!-- <a href="index.php" class="btn btn-primary btn-block mt-1">Login</a> -->
+                        <button type="submit" class="btn btn-primary">Login</button>
+                    </form>
+                    <div class="col d-flex mt-3">
+                        <p>Don't have an account ? </p>
+                        <a href="register.html"> Sign Up</a>
+                    </div>
+                </div>
+                <!-- <input type="text" name="" id=""> -->
+            </div>
+        </div>
+</body>
+<script src="assets/plugins/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="assets/plugins/jquery/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.4.4/dist/sweetalert2.all.js"></script>
+
+
+
+</html>
+
+<script>
+    $(document).ready(function () {
+        $("#form").on('submit', function (e) {
+            e.preventDefault();
+            var formData = new FormData(this);
+            $.ajax({
+                url: 'php/login.php',
+                type: 'POST',
+                contentType: false,
+                cache: false,
+                processData: false,
+                data: formData,
+                // dataType: 'json',
+                beforeSend: function () {
+                    Swal.fire({
+                        html: '<div style="font-size: 15px; width:4rem; height:4rem;" class="spinner-border"></div>',
+                        showConfirmButton: false
+                    });
+                },
+                success: function (data) {
+                    if (data.trim() == "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            html: '<div class=""> Login Successful</div>',
+                            showConfirmButton: true,
+                            allowOutsideClick: false,
+                            confirmButtonText: 'Proceed to Admin'
+                        }).then((result) => {
+                            location.href = "index.php";
+                        })
+                    }
+                    else {
+                        Swal.fire({
+                            icon: 'error',
+                            html: `<div class=""> ${data} </div>`,
+                            showConfirmButton: true,
+                            allowOutsideClick: false,
+                            confirmButtonText: 'Ok'
+                        })
+                    }
+                },
+                error: function (data) {
+                    Swal.fire({
+                        icon: 'error',
+                        html: '<div class"">Failed</div>',
+                        showConfirmButton: true,
+                        allowOutsideClick: true,
+                    })
+                }
+            })
+
+        })
+    })
+</script>

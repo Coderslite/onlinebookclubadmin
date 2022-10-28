@@ -1,0 +1,18 @@
+<?php 
+session_start();
+include "db_config.php";
+
+$id = $_POST['id'];
+
+$query = mysqli_query($con, "UPDATE books SET recommended = 1 WHERE id = '$id'");
+
+if($query){
+    $_SESSION['SuccessMessage'] = "Book Recommended";
+    header('location:../book_list.php');
+}
+else{
+    $_SESSION['ErrorMessage'] = "Recommendation Failed";
+    header('location:../book_list.php');
+}
+
+?>
